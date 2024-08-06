@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-
 import "./globals.css";
-
+import React from "react";
 import { Poppins } from "next/font/google";
 
 const inter = Poppins({
@@ -20,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="light">
+    <html lang="en" className="dark">
       <body className={inter.className}>{children}</body>
     </html>
   );

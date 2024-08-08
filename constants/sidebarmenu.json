@@ -1,0 +1,21 @@
+[
+  { "id": 1, "name": "Dashboard", "icon": "MdDashboard", "path": "/dashboard" },
+  {
+    "id": 2,
+    "name": "Budgets",
+    "icon": "FaPiggyBank",
+    "path": "/dashbaord/budget"
+  },
+  {
+    "id": 3,
+    "name": "Expenses",
+    "icon": "IoReceiptSharp",
+    "path": "/dashbaord/expenses"
+  },
+  {
+    "id": 4,
+    "name": "Upgrade",
+    "icon": "HiShieldCheck",
+    "path": "/dashbaord/upgrade"
+  }
+]

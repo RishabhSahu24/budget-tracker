@@ -1,43 +1,124 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
+import { fetchProjects, fetchUserData } from "@/common/authHelper";
+import PageLoader from "@/components/PageLoader";
+import RoundedIcon from "@/components/RoundedIcon";
+import Heading from "@/components/Heading";
+import Subtitle from "@/components/Subtitle";
+import { FaCode } from "react-icons/fa6";
 
 const Page = () => {
   const { user } = useUser();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const [userInfo, setUserInfo] = useState({
+    name: "",
+    email: "",
+    fullName: "",
+  });
+
+  const [projectInfo, setProjectInfo] = useState({
+    data: [],
+    count: 0,
+  });
 
   useEffect(() => {
     if (user) {
+      setIsLoading(true);
       const { firstName, fullName, emailAddresses } = user;
       const email = emailAddresses[0].emailAddress;
       const name = firstName || "";
       const full_name = fullName || "";
 
-      const fetchData = async () => {
+      const getData = async () => {
         try {
-          const response = await fetch(
-            `/api/users?email=${encodeURIComponent(
-              email
-            )}&name=${encodeURIComponent(name)}&full_name=${encodeURIComponent(
-              full_name
-            )}`
-          );
-          const data = await response.json();
-          console.log("data", data);
+          // Fetch user data
+          const userData = await fetchUserData(email, name, full_name);
+
+          if (userData?.user) {
+            setUserInfo({
+              name: userData?.user.name || "",
+              email: userData?.user.email || "",
+              fullName: userData?.user?.full_name || "",
+            });
+
+            // Fetch projects data
+            const projectData = await fetchProjects(email);
+
+            setProjectInfo({
+              data: projectData?.data || [],
+              count: projectData?.count || 0,
+            });
+
+            if (projectData.count === 0) {
+              console.log("No projects found for this email.");
+            } else {
+              console.log(
+                `Found ${projectData.count} project(s) for this email.`,
+                projectData.data
+              );
+            }
+          }
         } catch (error) {
-          console.error("Error fetching data:", error);
+          console.error("Error:", error);
+        } finally {
+          setIsLoading(false);
         }
       };
 
-      fetchData();
+      getData();
     }
   }, [user]);
 
+  console.log("userInfo ", userInfo);
+  console.log("projectInfo ", projectInfo);
+
   return (
-    <div className="p-6 text-red-600">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. At laboriosam
-      harum odio iusto, eligendi repellendus esse obcaecati sapiente doloremque
-      sit ad ut. Unde nobis fuga alias placeat doloremque, modi quia!
-    </div>
+    <>
+      <main className="flex-1 flex justify-center items-center p-6">
+        {isLoading ? (
+          <PageLoader />
+        ) : (
+          <>
+            {!projectInfo?.count ? (
+              <div className="items-center justify-center flex flex-col border border-secondary-200 rounded-md">
+                <RoundedIcon>
+                  <FaCode size={100} />
+                </RoundedIcon>
+
+                <Heading variant="primary" level={1} size="xl" className="mt-5">
+                  Welcome to Your Project Tracker
+                </Heading>
+
+                <Subtitle size="lg" className="text-center mt-5 text-white">
+                  Get started by creating your first project!
+                </Subtitle>
+              </div>
+            ) : (
+              <div>
+                <h1>User Information</h1>
+                <p>Name: {userInfo.name}</p>
+                <p>Email: {userInfo.email}</p>
+                <p>Full Name: {userInfo.fullName}</p>
+                <h2>Projects Information</h2>
+                {projectInfo.count === 0 ? (
+                  <p>No projects found.</p>
+                ) : (
+                  <ul>
+                    {projectInfo?.data.map((project: any, index: any) => (
+                      <li key={index}>
+                        <strong>{project?.name}</strong>: {project?.description}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
+          </>
+        )}
+      </main>
+    </>
   );
 };
 

@@ -26,12 +26,12 @@ const Subtitle = ({
   };
 
   const subtitleVariant = {
-    primary: "text-black-500",
-    secondary: "text-black-500",
-    dark: "text-primary-800",
-    light: "text-white",
-    warning: "text-orange-500",
-    black: "text-black",
+    primary: "text-white", // Primary text color for dark theme
+    secondary: "text-gray-400", // Secondary text color for dark theme
+    dark: "text-gray-300", // Slightly lighter than primary for dark mode
+    light: "text-gray-200", // Lightest text color for dark theme
+    warning: "text-yellow-500", // Warning color in dark theme
+    black: "text-black", // This can be adjusted depending on the background
   }[variant];
 
   const fontSizeClass = sizeToFontSize[size];

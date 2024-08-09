@@ -15,6 +15,11 @@ const usersSchema = new Schema(
       type: String,
       required: false,
     },
+    current_project: {
+      type: Schema.Types.ObjectId,
+      ref: "Projects", // Reference to the Projects model
+      default: null,
+    },
   },
   { timestamps: true }
 );

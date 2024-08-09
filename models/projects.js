@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+import Users from "./users";
 
 const projectsSchema = new Schema(
   {
@@ -12,6 +13,13 @@ const projectsSchema = new Schema(
     email: {
       type: String,
       required: true,
+      validate: {
+        async validator(email) {
+          const user = await Users.findOne({ email });
+          return !!user;
+        },
+        message: "User with this email does not exist",
+      },
     },
     owner_name: {
       type: String,

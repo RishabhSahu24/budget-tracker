@@ -18,7 +18,7 @@ export async function GET(request) {
     );
   }
 
-  // Check if user with the provided email exists
+  // Check if a user with the provided email exists
   const existingUser = await Users.findOne({ email });
 
   if (existingUser) {
@@ -30,6 +30,7 @@ export async function GET(request) {
     name,
     email,
     full_name,
+    current_project: null, // Set default for current_project
   });
 
   await newUser.save();

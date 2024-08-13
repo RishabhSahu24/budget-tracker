@@ -37,3 +37,37 @@ export async function GET(request) {
 
   return NextResponse.json({ newUser: true, user: newUser });
 }
+
+export async function POST(request) {
+  await connectMongoDB();
+
+  // Parse the request body to get email and projectId
+  const { email, projectId } = await request.json();
+
+  if (!email || !projectId) {
+    return NextResponse.json(
+      { error: "Email and projectId are required." },
+      { status: 400 }
+    );
+  }
+
+  try {
+    // Find the user by email and update the current_project field
+    const updatedUser = await Users.findOneAndUpdate(
+      { email },
+      { current_project: projectId },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedUser) {
+      return NextResponse.json({ error: "User not found." }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true, user: updatedUser });
+  } catch (error) {
+    return NextResponse.json(
+      { error: "An error occurred while updating the user." },
+      { status: 500 }
+    );
+  }
+}

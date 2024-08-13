@@ -1,12 +1,13 @@
 "use client";
 import Heading from "@/components/Heading";
-import Subtitle from "@/components/Subtitle";
+
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { redirectAsPerContext } from "@/common/authHelper";
+import SubTitle from "@/components/Subtitle";
 
 export default function Home() {
   const { user, isSignedIn } = useUser();
@@ -28,10 +29,10 @@ export default function Home() {
               With Clarity & Precision
             </strong>
           </Heading>
-          <Subtitle className="mt-4 sm:text-xl/relaxed" size={"md"}>
+          <SubTitle className="mt-4 sm:text-xl/relaxed" size={"md"}>
             Seamlessly plan, track, and execute your projects with our intuitive
             portal designed to bring your ideas to life.
-          </Subtitle>
+          </SubTitle>
 
           <div className="mt-8 flex gap-4 text-center justify-center">
             <Link href={"/sign-in"}>

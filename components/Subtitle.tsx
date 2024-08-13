@@ -9,7 +9,7 @@ type SubtitleProps = {
   title?: string;
 };
 
-const Subtitle = ({
+const SubTitle = ({
   size = "xs",
   variant = "dark",
   className,
@@ -30,7 +30,7 @@ const Subtitle = ({
     secondary: "text-gray-400", // Secondary text color for dark theme
     dark: "text-gray-300", // Slightly lighter than primary for dark mode
     light: "text-gray-200", // Lightest text color for dark theme
-    warning: "text-yellow-500", // Warning color in dark theme
+    warning: "text-red-500", // Warning color in dark theme
     black: "text-black", // This can be adjusted depending on the background
   }[variant];
 
@@ -46,4 +46,4 @@ const Subtitle = ({
   );
 };
 
-export default Subtitle;
+export default SubTitle;

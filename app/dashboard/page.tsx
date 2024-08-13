@@ -5,8 +5,9 @@ import { fetchProjects, fetchUserData } from "@/common/authHelper";
 import PageLoader from "@/components/PageLoader";
 import RoundedIcon from "@/components/RoundedIcon";
 import Heading from "@/components/Heading";
-import Subtitle from "@/components/Subtitle";
 import { FaCode } from "react-icons/fa6";
+import CreateProject from "@/components/modals/CreateProject";
+import SubTitle from "@/components/Subtitle";
 
 const Page = () => {
   const { user } = useUser();
@@ -50,15 +51,6 @@ const Page = () => {
               data: projectData?.data || [],
               count: projectData?.count || 0,
             });
-
-            if (projectData.count === 0) {
-              console.log("No projects found for this email.");
-            } else {
-              console.log(
-                `Found ${projectData.count} project(s) for this email.`,
-                projectData.data
-              );
-            }
           }
         } catch (error) {
           console.error("Error:", error);
@@ -70,9 +62,6 @@ const Page = () => {
       getData();
     }
   }, [user]);
-
-  console.log("userInfo ", userInfo);
-  console.log("projectInfo ", projectInfo);
 
   return (
     <>
@@ -91,9 +80,10 @@ const Page = () => {
                   Welcome to Your Project Tracker
                 </Heading>
 
-                <Subtitle size="lg" className="text-center mt-5 text-white">
+                <SubTitle size="lg" className="text-center mt-5 text-white">
                   Get started by creating your first project!
-                </Subtitle>
+                </SubTitle>
+                <CreateProject userInfo={userInfo} />
               </div>
             ) : (
               <div>
@@ -102,6 +92,7 @@ const Page = () => {
                 <p>Email: {userInfo.email}</p>
                 <p>Full Name: {userInfo.fullName}</p>
                 <h2>Projects Information</h2>
+                <CreateProject userInfo={userInfo} />
                 {projectInfo.count === 0 ? (
                   <p>No projects found.</p>
                 ) : (

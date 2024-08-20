@@ -17,6 +17,7 @@ const Page = () => {
     name: "",
     email: "",
     fullName: "",
+    currentProject: null,
   });
 
   const [projectInfo, setProjectInfo] = useState({
@@ -36,12 +37,13 @@ const Page = () => {
         try {
           // Fetch user data
           const userData = await fetchUserData(email, name, full_name);
-
+          console.log("userData", userData);
           if (userData?.user) {
             setUserInfo({
               name: userData?.user.name || "",
               email: userData?.user.email || "",
               fullName: userData?.user?.full_name || "",
+              currentProject: userData?.current_project || null,
             });
 
             // Fetch projects data
@@ -86,25 +88,7 @@ const Page = () => {
                 <CreateProject userInfo={userInfo} />
               </div>
             ) : (
-              <div>
-                <h1>User Information</h1>
-                <p>Name: {userInfo.name}</p>
-                <p>Email: {userInfo.email}</p>
-                <p>Full Name: {userInfo.fullName}</p>
-                <h2>Projects Information</h2>
-                <CreateProject userInfo={userInfo} />
-                {projectInfo.count === 0 ? (
-                  <p>No projects found.</p>
-                ) : (
-                  <ul>
-                    {projectInfo?.data.map((project: any, index: any) => (
-                      <li key={index}>
-                        <strong>{project?.name}</strong>: {project?.description}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+              <div> </div>
             )}
           </>
         )}

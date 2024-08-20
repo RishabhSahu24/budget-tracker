@@ -1,6 +1,5 @@
 "use client";
 import Heading from "@/components/Heading";
-
 import { Button } from "@/components/ui/button";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
@@ -10,21 +9,23 @@ import { redirectAsPerContext } from "@/common/authHelper";
 import SubTitle from "@/components/Subtitle";
 
 export default function Home() {
-  const { user, isSignedIn } = useUser();
+  const { isSignedIn } = useUser();
   const route = useRouter();
+
+  console.log("isSignedIn", isSignedIn);
 
   useEffect(() => {
     const routeToRedirect = redirectAsPerContext(isSignedIn);
     route.push(routeToRedirect);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSignedIn, user]);
+  }, [isSignedIn]);
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
       <section className="flex-grow flex items-center justify-center">
         <div className="relative mx-auto px-4 sm:px-6 lg:px-8 max-w-xl text-center">
           <Heading level={1} size="xxl" variant="primary">
-            Empower Your Projects
+            Empower Your Projectss
             <strong className="block text-rose-700">
               With Clarity & Precision
             </strong>

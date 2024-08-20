@@ -17,7 +17,7 @@ const usersSchema = new Schema(
     },
     current_project: {
       type: Schema.Types.ObjectId,
-      ref: "Projects", // Reference to the Projects model
+      ref: "Projects",
       default: null,
     },
   },

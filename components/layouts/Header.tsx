@@ -1,7 +1,7 @@
 import React from "react";
-import { UserButton } from "@clerk/nextjs";
 import Heading from "../Heading";
 import Image from "next/image";
+import { UserButton } from "@clerk/nextjs";
 
 const Header = () => {
   return (

@@ -19,7 +19,7 @@ export async function GET(request) {
   // Find all projects by email
   try {
     const projects = await Projects.find({ email });
-    const count = projects.length;
+    const count = projects?.length;
 
     if (count === 0) {
       return NextResponse.json(

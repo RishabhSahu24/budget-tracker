@@ -57,6 +57,26 @@ export default function CreateProject({ userInfo }: CreateProjectProps) {
       }
     });
 
+    if (error) return error;
+
+    if (formData.name.length > 130) {
+      console.log("formData.name.length", formData.name.length);
+      setFormError((prev: any) => ({
+        ...prev,
+        name: "Project name is too long (max 130 characters)",
+      }));
+      error = true;
+    }
+
+    if (formData.description && formData.description.length > 255) {
+      console.log("formData.name.length", formData.description.length);
+      setFormError((prev: any) => ({
+        ...prev,
+        description: "Description is too long (max 255 characters)",
+      }));
+      error = true;
+    }
+
     return error;
   };
 
@@ -64,8 +84,8 @@ export default function CreateProject({ userInfo }: CreateProjectProps) {
     event.preventDefault();
 
     try {
-      console.log("formDAta", formData);
       if (validateForm()) return;
+
       setModalStatus("processing");
 
       // Create the project

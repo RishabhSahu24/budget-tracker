@@ -13,6 +13,7 @@ interface ModalSuccessProps {
   description: string;
   imageSrc?: string;
   buttonTitle?: string;
+  onClick?: any;
 }
 
 const ModalSuccess: React.FC<ModalSuccessProps> = ({
@@ -20,6 +21,7 @@ const ModalSuccess: React.FC<ModalSuccessProps> = ({
   description,
   imageSrc = "/success.svg",
   buttonTitle = "Okay",
+  onClick,
 }) => {
   return (
     <>
@@ -33,8 +35,8 @@ const ModalSuccess: React.FC<ModalSuccessProps> = ({
         </DialogDescription>
       </div>
 
-      <DialogClose asChild>
-        <Button variant={"default"} fullWidth={true}>
+      <DialogClose>
+        <Button variant={"default"} fullWidth={true} onClick={onClick}>
           {buttonTitle}
         </Button>
       </DialogClose>

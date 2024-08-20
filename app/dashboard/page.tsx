@@ -25,7 +25,7 @@ const Page = () => {
     count: 0,
   });
 
-  useEffect(() => {
+  const fetch = () => {
     if (user) {
       setIsLoading(true);
       const { firstName, fullName, emailAddresses } = user;
@@ -63,6 +63,13 @@ const Page = () => {
 
       getData();
     }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetch();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   return (
@@ -85,10 +92,10 @@ const Page = () => {
                 <SubTitle size="lg" className="text-center mt-5 text-white">
                   Get started by creating your first project!
                 </SubTitle>
-                <CreateProject userInfo={userInfo} />
+                <CreateProject userInfo={userInfo} reFetch={fetch} />
               </div>
             ) : (
-              <div> </div>
+              <></>
             )}
           </>
         )}

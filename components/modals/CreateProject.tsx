@@ -20,9 +20,13 @@ import ModalFailed from "./modal-status/ModalFailed";
 
 interface CreateProjectProps {
   userInfo: any;
+  reFetch: any;
 }
 
-export default function CreateProject({ userInfo }: CreateProjectProps) {
+export default function CreateProject({
+  userInfo,
+  reFetch,
+}: CreateProjectProps) {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [modalStatus, setModalStatus] = useState<string>("active");
   const [formData, setFormData] = useState({
@@ -127,7 +131,6 @@ export default function CreateProject({ userInfo }: CreateProjectProps) {
 
       const updateUserData = await updateUserResponse.json();
 
-      console.log("updateUserData", updateUserData);
       if (!updateUserResponse.ok) {
         console.log("updateUserResponse", updateUserResponse);
         setModalStatus("failed");
@@ -190,6 +193,7 @@ export default function CreateProject({ userInfo }: CreateProjectProps) {
             description={
               "Now you can add tasks. You can manage it from your dashboard."
             }
+            onClick={reFetch}
           />
         )}
         {modalStatus === "failed" && (
@@ -202,22 +206,22 @@ export default function CreateProject({ userInfo }: CreateProjectProps) {
         )}
         {modalStatus === "active" && (
           <>
-            <div className="flex flex-col">
-              <DialogTitle className=" leading-6 pb-4">
+            <div className="flex flex-col max-h-[85vh] overflow-y-auto">
+              <DialogTitle className=" leading-6 pb-2">
                 Create Project
               </DialogTitle>
-              <DialogDescription className="text-black-500 pb-4">
+              <DialogDescription className="text-black-500 pb-2">
                 Enter the details for your new project below.
               </DialogDescription>
 
-              <form className="space-y-6" onSubmit={handleSubmit}>
+              <form className="space-y-4" onSubmit={handleSubmit}>
                 <div className="w-full">
                   <InputLabel htmlFor="name" label="Project Name" />
                   <Input className="mt-1">
                     <InputBox
                       name="name"
                       type="text"
-                      className="py-3 placeholder:text-gray-500 focus:border-indigo-500 hover:border-indigo-500 mb-2"
+                      className="py-3 placeholder:text-gray-500 focus:border-indigo-500 hover:border-indigo-500 "
                       id="name"
                       placeholder="Enter your project name"
                       onChange={handleInputChange}

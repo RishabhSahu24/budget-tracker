@@ -22,8 +22,9 @@ const config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        background: "rgb(20, 22, 25)", // Updated background color
+        foreground: "rgb(198, 200, 201)", // Updated text color
+        customBorder: "#27292B", // Custom border color
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

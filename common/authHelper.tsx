@@ -5,8 +5,6 @@ export const redirectAsPerContext = (isSignedIn: any = {}) => {
   return "/";
 };
 
-// authHelper.tsx
-
 export const fetchUserData = async (
   email: string,
   name: string,
@@ -19,7 +17,6 @@ export const fetchUserData = async (
       )}&full_name=${encodeURIComponent(full_name)}`
     );
     const data = await response.json();
-    console.log("User Data:", data);
     return data;
   } catch (error) {
     console.error("Error fetching user data:", error);
@@ -37,6 +34,21 @@ export const fetchProjects = async (email: string) => {
     return data;
   } catch (error) {
     console.error("Error fetching projects data:", error);
+    throw error;
+  }
+};
+
+export const fetchProjectDetails = async (projectId: string) => {
+  try {
+    console.log("projectId", projectId);
+    const response = await fetch(
+      `/api/project_details?id=${encodeURIComponent(projectId)}`
+    );
+    const data = await response.json();
+    console.log("Project Detdsadsaails:", data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching project details:", error);
     throw error;
   }
 };

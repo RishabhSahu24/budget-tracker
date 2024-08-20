@@ -13,7 +13,7 @@ type HeadingProps = {
 const Heading = ({
   level = 6,
   children,
-  variant = "dark",
+  variant = "primary",
   size = "xs",
   className,
 }: HeadingProps) => {
@@ -40,7 +40,7 @@ const Heading = ({
   const DynamicTag = `h${computedLevel}` as keyof JSX.IntrinsicElements;
 
   const headingVariant = {
-    primary: "text-light-30",
+    primary: "text-foreground",
     secondary: "text-black-500",
     dark: "text-black-800",
     light: "text-white",

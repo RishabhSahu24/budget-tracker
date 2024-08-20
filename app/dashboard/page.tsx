@@ -1,18 +1,25 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
-import { fetchProjects, fetchUserData } from "@/common/authHelper";
+import {
+  fetchProjectDetails,
+  fetchProjects,
+  fetchUserData,
+} from "@/common/authHelper";
 import PageLoader from "@/components/PageLoader";
 import RoundedIcon from "@/components/RoundedIcon";
 import Heading from "@/components/Heading";
 import { FaCode } from "react-icons/fa6";
 import CreateProject from "@/components/modals/CreateProject";
 import SubTitle from "@/components/Subtitle";
+import Filters from "@/components/filters/Filters";
 
 const Page = () => {
   const { user } = useUser();
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [projectLoading, setProjectLoading] = useState<boolean>(false);
 
+  const [projectDetails, setProjectDetails] = useState<any>(null);
   const [userInfo, setUserInfo] = useState({
     name: "",
     email: "",
@@ -37,13 +44,13 @@ const Page = () => {
         try {
           // Fetch user data
           const userData = await fetchUserData(email, name, full_name);
-          console.log("userData", userData);
+
           if (userData?.user) {
             setUserInfo({
               name: userData?.user.name || "",
               email: userData?.user.email || "",
               fullName: userData?.user?.full_name || "",
-              currentProject: userData?.current_project || null,
+              currentProject: userData?.user?.current_project,
             });
 
             // Fetch projects data
@@ -72,30 +79,62 @@ const Page = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
+  useEffect(() => {
+    const fetchProjectDetail = async () => {
+      if (userInfo.currentProject) {
+        setProjectLoading(true);
+        try {
+          const result = await fetchProjectDetails(userInfo.currentProject);
+          setProjectDetails(result.data);
+        } catch (error) {
+          console.error("Error fetching project details:", error);
+        } finally {
+          setProjectLoading(false);
+        }
+      }
+    };
+
+    fetchProjectDetail();
+  }, [userInfo.currentProject]);
+
   return (
     <>
-      <main className="flex-1 flex justify-center items-center p-6">
-        {isLoading ? (
-          <PageLoader />
+      <main>
+        {isLoading || projectLoading ? (
+          <div className="p-6">
+            <PageLoader />
+          </div>
         ) : (
           <>
             {!projectInfo?.count ? (
-              <div className="items-center justify-center flex flex-col border border-secondary-200 rounded-md">
-                <RoundedIcon>
-                  <FaCode size={100} />
-                </RoundedIcon>
+              <main className="fixed inset-0 flex flex-col justify-center items-center">
+                <div className="items-center justify-center flex flex-col border border-secondary-200 rounded-md ">
+                  <RoundedIcon>
+                    <FaCode size={100} />
+                  </RoundedIcon>
 
-                <Heading variant="primary" level={1} size="xl" className="mt-5">
-                  Welcome to Your Project Tracker
-                </Heading>
+                  <Heading
+                    variant="primary"
+                    level={1}
+                    size="xl"
+                    className="mt-5"
+                  >
+                    Welcome to Your Project Tracker
+                  </Heading>
 
-                <SubTitle size="lg" className="text-center mt-5 text-white">
-                  Get started by creating your first project!
-                </SubTitle>
-                <CreateProject userInfo={userInfo} reFetch={fetch} />
-              </div>
+                  <SubTitle size="lg" className="text-center mt-5 text-white">
+                    Get started by creating your first project!
+                  </SubTitle>
+                  <CreateProject userInfo={userInfo} reFetch={fetch} />
+                </div>
+              </main>
             ) : (
-              <></>
+              <div className=" p-6">
+                <Heading level={1} size="lg">
+                  {projectDetails?.name ?? ""}
+                  <Filters />
+                </Heading>
+              </div>
             )}
           </>
         )}
